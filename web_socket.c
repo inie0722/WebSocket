@@ -78,7 +78,7 @@ int ws_upgrade(ws_handle* ws, const char* host, const char* get)
 
 int ws_read(ws_handle* ws, char* input, size_t size)
 {
-	ws->len = 0;
+	ws->size = 0;
 	frame f;
 	uint64_t u_len = 2;
 	size_t ws_buf_len = ws->capacity;
@@ -165,7 +165,7 @@ int ws_read(ws_handle* ws, char* input, size_t size)
 
 int ws_write(ws_handle* ws, char* input, size_t size, uint8_t fin, uint8_t opcode)
 {
-	ws->len = 0;
+	ws->size = 0;
 	frame f;
 	uint64_t u_len = 2;
 	size_t ws_buf_len = ws->capacity;
@@ -187,9 +187,9 @@ int ws_write(ws_handle* ws, char* input, size_t size, uint8_t fin, uint8_t opcod
 		f.Payload_len_continued = size;
 		u_len += size + 2;
 		buf[1] = 126;
-		uint8_t t_size = size;
-		HTON(uint8_t, t_size);
-		*(uint8_t*)& buf[2] = t_size;
+		uint16_t t_size = size;
+		HTON(uint16_t, t_size);
+		*(uint16_t*)& buf[2] = t_size;
 		buf = &buf[4];
 	}
 	else

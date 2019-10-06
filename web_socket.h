@@ -54,7 +54,7 @@
         }while(0);
 
 
-struct frame
+typedef struct frame
 {
 	uint8_t FIN : 1;
 	uint8_t RSV1 : 1;
@@ -65,15 +65,15 @@ struct frame
 	uint8_t Payload_len : 7;
 	uint64_t Payload_len_continued;
 	uint8_t Mask_key[4];
-};
+}frame;
 
-struct ws_handle
+typedef struct ws_handle
 {
 	uint8_t Mask;
 	char* buf;
 	size_t size;
 	size_t capacity;
-};
+}ws_handle;
 
 int ws_new(ws_handle* ws, int mask, size_t size);
 
